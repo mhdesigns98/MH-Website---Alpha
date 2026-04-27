@@ -1,0 +1,142 @@
+---
+interface Props {
+  title: string;
+  tagline: string;
+  category: string;
+  tags: string[];
+  status: string;
+  url?: string;
+  slug: string;
+  accent: string;
+}
+
+const { title, tagline, category, tags, status, url, slug, accent } = Astro.props;
+
+const statusClass = {
+  'Live': 'live',
+  'In Progress': 'progress',
+  'Concept': 'concept',
+}[status] ?? 'concept';
+---
+
+<a href={`/projects/${slug}`} class="card">
+  <div class="card-glow" style={`--card-accent: ${accent};`}></div>
+
+  <div class="card-top">
+    <span class="category">{category}</span>
+    <span class={`badge ${statusClass}`}>{status}</span>
+  </div>
+
+  <div class="card-body">
+    <h3>{title}</h3>
+    <p>{tagline}</p>
+  </div>
+
+  <div class="card-footer">
+    <div class="tags">
+      {tags.slice(0, 3).map(tag => (
+        <span class="tag">{tag}</span>
+      ))}
+    </div>
+    <span class="arrow">→</span>
+  </div>
+</a>
+
+<style define:vars={{ accent }}>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    border-color: rgba(var(--card-accent-rgb, 0, 217, 255), 0.35);
+    transform: translateY(-3px);
+  }
+
+  .card-glow {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: var(--card-accent, var(--accent));
+    filter: blur(60px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .card:hover .card-glow { opacity: 0.08; }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .category {
+    font-family: var(--font-head);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .card-body { flex: 1; }
+
+  h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.7rem;
+    font-family: var(--font-head);
+    font-weight: 500;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .arrow {
+    font-size: 1.1rem;
+    color: var(--muted);
+    transition: color var(--transition), transform var(--transition);
+  }
+  .card:hover .arrow {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+</style>

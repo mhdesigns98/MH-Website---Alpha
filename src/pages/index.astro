@@ -1,0 +1,188 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Footer from '../components/Footer.astro';
+
+const allProjects = await getCollection('projects');
+const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout>
+  <Header />
+  <main>
+    <Hero />
+
+    <!-- Work Section -->
+    <section id="work" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Selected Work</h2>
+          <p>Things I'm building — across public media, design systems, and tools.</p>
+        </div>
+
+        <div class="projects-grid">
+          {projects.map(project => (
+            <ProjectCard
+              title={project.data.title}
+              tagline={project.data.tagline}
+              category={project.data.category}
+              tags={project.data.tags}
+              status={project.data.status}
+              url={project.data.url}
+              slug={project.slug}
+              accent={project.data.accent}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-content">
+            <span class="section-label">About</span>
+            <h2>I build digital things that work.</h2>
+            <p>
+              I'm a Web Designer &amp; Developer based in Virginia, working at VPM — the state's
+              public media organization. My day job involves building layouts, components, and
+              digital experiences for NPR news, PBS content, podcasts, and documentary productions.
+            </p>
+            <p>
+              Outside of that, I like making tools. Whether it's a farming tracker for a game I'm
+              obsessed with or a system that makes a workflow 10x faster — I'm drawn to building
+              things that solve real problems, even small personal ones.
+            </p>
+          </div>
+
+          <div class="about-stats">
+            <div class="stat">
+              <span class="stat-num">VPM</span>
+              <span class="stat-label">Current employer</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">4</span>
+              <span class="stat-label">Active projects</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">VA</span>
+              <span class="stat-label">Based in Virginia</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .section {
+    padding: 5rem 0;
+  }
+
+  /* Section Header */
+  .section-header {
+    margin-bottom: 3rem;
+  }
+  .section-header h2 {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    margin-bottom: 0.5rem;
+  }
+  .section-header p {
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  /* Projects Grid */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+  }
+
+  /* About */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .section-label {
+    display: inline-block;
+    font-family: var(--font-head);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .about-content h2 {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-content p {
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  /* Stats */
+  .about-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .stat {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .stat:last-child { border-bottom: none; }
+
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: var(--font-head);
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .about-stats {
+      flex-direction: row;
+    }
+    .stat {
+      flex: 1;
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+    }
+    .stat:last-child { border-right: none; }
+  }
+</style>

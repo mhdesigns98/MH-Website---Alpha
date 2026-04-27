@@ -1,0 +1,46 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container">
+    <p>© {year} Mike Hayes &mdash; MH Designs</p>
+    <div class="links">
+      <a href="mailto:mhayes@vpm.org">Email</a>
+      <a href="https://vpm.org" target="_blank" rel="noopener">VPM.org</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    margin-top: 6rem;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .links a {
+    font-size: 0.85rem;
+    color: var(--muted);
+    transition: color var(--transition);
+  }
+  .links a:hover { color: var(--text); }
+</style>

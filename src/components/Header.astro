@@ -1,0 +1,77 @@
+---
+const navLinks = [
+  { label: 'Work', href: '/#work' },
+  { label: 'About', href: '/#about' },
+];
+---
+
+<header>
+  <div class="container">
+    <a href="/" class="wordmark">MH<span>.</span></a>
+    <nav>
+      {navLinks.map(link => (
+        <a href={link.href}>{link.label}</a>
+      ))}
+      <a href="mailto:mhayes@vpm.org" class="contact-btn">Say hi</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8, 8, 16, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .wordmark {
+    font-family: var(--font-head);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .wordmark span { color: var(--accent); }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  nav a {
+    font-family: var(--font-head);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: color var(--transition);
+  }
+  nav a:hover { color: var(--text); }
+
+  .contact-btn {
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text) !important;
+    transition: border-color var(--transition), background var(--transition) !important;
+  }
+  .contact-btn:hover {
+    border-color: var(--accent) !important;
+    background: var(--accent-glow) !important;
+  }
+
+  @media (max-width: 600px) {
+    nav a:not(.contact-btn) { display: none; }
+  }
+</style>
