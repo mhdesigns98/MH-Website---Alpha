@@ -34,6 +34,7 @@ const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
               url={project.data.url}
               slug={project.slug}
               accent={project.data.accent}
+              protected={project.data.protected}
             />
           ))}
         </div>

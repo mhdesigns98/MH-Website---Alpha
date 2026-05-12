@@ -13,6 +13,8 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     order: z.number().default(99),
     accent: z.string().default('#00d9ff'),
+    protected: z.boolean().default(false),
+    passwordHash: z.string().optional(),
   }),
 });
 
