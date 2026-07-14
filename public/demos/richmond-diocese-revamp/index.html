@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catholic Diocese of Richmond</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --purple-deep:  #1A1035;
+      --purple-vivid: #7B2D8B;
+      --gold:         #C8A84B;
+      --gold-light:   #E4C97A;
+      --parchment:    #F5F0E8;
+      --parchment-mid:#EDE6D6;
+      --body-text:    #2D2D2D;
+      --white:        #FFFFFF;
+      --gray-mid:     #6B6875;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--body-text);
+      background: var(--parchment);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* UTILITY BAR */
+    .util-bar {
+      background: var(--purple-deep);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.45rem 2.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 2rem;
+      align-items: center;
+    }
+    .util-bar a { color: rgba(255,255,255,0.7); text-decoration: none; transition: color 0.2s; }
+    .util-bar a:hover { color: var(--gold); }
+    .util-bar .donate-btn {
+      background: var(--gold);
+      color: var(--purple-deep);
+      padding: 0.25rem 0.85rem;
+      border-radius: 2px;
+      font-weight: 600;
+      color: var(--purple-deep);
+    }
+    .util-bar .donate-btn:hover { background: var(--gold-light); }
+
+    /* HEADER / NAV */
+    header {
+      background: var(--white);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-shield {
+      width: 44px;
+      height: 52px;
+      flex-shrink: 0;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+    .logo-text .catholic { font-family: 'Playfair Display', serif; font-size: 0.85rem; font-weight: 700; color: var(--purple-deep); letter-spacing: 0.04em; }
+    .logo-text .diocese-of { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-mid); font-weight: 400; }
+    .logo-text .richmond { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--purple-deep); }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: var(--body-text);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 0.5rem 0.75rem;
+      border-radius: 3px;
+      transition: color 0.2s, background 0.2s;
+      position: relative;
+    }
+    nav ul li a:hover { color: var(--purple-vivid); background: rgba(123,45,139,0.05); }
+
+    .nav-icons { display: flex; gap: 1rem; align-items: center; }
+    .nav-icons button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--gray-mid);
+      padding: 0.3rem;
+      transition: color 0.2s;
+    }
+    .nav-icons button:hover { color: var(--purple-vivid); }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--purple-deep);
+      padding: 0.4rem;
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 88vh;
+      min-height: 560px;
+      max-height: 820px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          to right,
+          rgba(26,16,53,0.82) 0%,
+          rgba(26,16,53,0.55) 45%,
+          rgba(26,16,53,0.2) 100%
+        ),
+        url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Basilica_of_the_National_Shrine_of_the_Immaculate_Conception_-_exterior.jpg/1600px-Basilica_of_the_National_Shrine_of_the_Immaculate_Conception_-_exterior.jpg')
+          center/cover no-repeat;
+    }
+
+    /* Fallback gradient if image fails */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #1A1035 0%, #3D1A5F 50%, #1A2050 100%);
+      opacity: 0;
+      z-index: -1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 2.5rem 5rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 3rem;
+    }
+
+    .hero-text {
+      max-width: 520px;
+    }
+
+    /* Signature element: vertical gold rule */
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+    .hero-rule {
+      width: 3px;
+      height: 32px;
+      background: var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .hero-eyebrow span {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+      font-weight: 300;
+      max-width: 420px;
+    }
+
+    .hero-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--gold);
+      color: var(--purple-deep);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.8rem 1.6rem;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--white);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.8rem 1.6rem;
+      border-radius: 2px;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.4);
+      transition: border-color 0.2s, background 0.2s;
+      cursor: pointer;
+    }
+    .btn-ghost:hover { border-color: var(--white); background: rgba(255,255,255,0.07); }
+
+    /* Hero scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      right: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: rgba(255,255,255,0.45);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: rgba(255,255,255,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: var(--gold);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { left: -100%; }
+      50% { left: 0; }
+      100% { left: 100%; }
+    }
+
+    /* QUICK LINKS STRIP */
+    .quick-strip {
+      background: var(--purple-deep);
+      padding: 0;
+    }
+    .quick-strip-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.1rem 1.5rem;
+      text-decoration: none;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      border-right: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.2s, color 0.2s;
+    }
+    .quick-link:last-child { border-right: none; }
+    .quick-link:hover { background: rgba(200,168,75,0.12); color: var(--gold); }
+    .quick-link svg { opacity: 0.6; flex-shrink: 0; }
+    .quick-link:hover svg { opacity: 1; }
+
+    /* FEATURED SECTION */
+    .featured {
+      background: var(--white);
+      padding: 5rem 2.5rem;
+    }
+    .featured-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    /* Signature: illuminated-manuscript-style gold rule + label */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label .gold-rule {
+      width: 3px;
+      height: 22px;
+      background: var(--gold);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+    .section-label span {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 600;
+      color: var(--purple-deep);
+      line-height: 1.2;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--parchment);
+      border-radius: 3px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid var(--parchment-mid);
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(26,16,53,0.1);
+    }
+
+    .card-image {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+      display: block;
+      background: linear-gradient(135deg, var(--purple-deep), #3D1A5F);
+    }
+
+    /* Placeholder art for cards */
+    .card-img-placeholder {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .card-img-placeholder.pilgrimage { background: linear-gradient(135deg, #1A1035 0%, #3D1A5F 100%); }
+    .card-img-placeholder.faith { background: linear-gradient(135deg, #1A3070 0%, #2D5090 100%); }
+    .card-img-placeholder.safe { background: linear-gradient(135deg, #0D3A2D 0%, #1B5940 100%); }
+
+    .card-body {
+      padding: 1.5rem 1.6rem 1.8rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--purple-deep);
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+    }
+    .card p {
+      font-size: 0.84rem;
+      color: var(--gray-mid);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 1.25rem;
+    }
+    .card-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+    .btn-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.1rem;
+      border-radius: 2px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-card.gold { background: var(--gold); color: var(--purple-deep); }
+    .btn-card.gold:hover { background: var(--gold-light); }
+    .btn-card.outline { background: transparent; color: var(--purple-deep); border: 1px solid rgba(26,16,53,0.25); }
+    .btn-card.outline:hover { background: var(--parchment-mid); }
+
+    /* NEWS SECTION */
+    .news-section {
+      background: var(--parchment);
+      padding: 5rem 2.5rem;
+      position: relative;
+    }
+
+    /* Signature element: large decorative illuminated letter */
+    .news-section::before {
+      content: '✝';
+      position: absolute;
+      right: 2.5rem;
+      top: 3rem;
+      font-size: 6rem;
+      color: var(--gold);
+      opacity: 0.12;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .news-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .news-list { list-style: none; }
+    .news-item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 1.25rem;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--parchment-mid);
+      align-items: start;
+    }
+    .news-item:first-child { padding-top: 0; }
+
+    .news-date {
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .news-date .day {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--purple-deep);
+      line-height: 1;
+    }
+    .news-date .month {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-top: 0.2rem;
+    }
+
+    .news-content {}
+    .news-category {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-mid);
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    .news-content h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--purple-deep);
+      line-height: 1.35;
+      margin-bottom: 0.35rem;
+    }
+    .news-content h4 a { text-decoration: none; color: inherit; transition: color 0.2s; }
+    .news-content h4 a:hover { color: var(--purple-vivid); }
+    .news-excerpt {
+      font-size: 0.8rem;
+      color: var(--gray-mid);
+      line-height: 1.55;
+    }
+
+    .news-see-more {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple-vivid);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(123,45,139,0.3);
+      padding-bottom: 0.2rem;
+      transition: border-color 0.2s, gap 0.2s;
+    }
+    .news-see-more:hover { border-color: var(--purple-vivid); gap: 0.9rem; }
+
+    /* Sidebar */
+    .news-sidebar { }
+
+    .sidebar-block {
+      background: var(--white);
+      border-radius: 3px;
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid var(--parchment-mid);
+    }
+
+    .sidebar-block h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--purple-deep);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .parish-search input {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border: 1px solid var(--parchment-mid);
+      border-radius: 2px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: var(--body-text);
+      background: var(--parchment);
+      margin-bottom: 0.6rem;
+      transition: border-color 0.2s;
+    }
+    .parish-search input:focus {
+      outline: none;
+      border-color: var(--purple-vivid);
+    }
+    .parish-search input::placeholder { color: #aaa; }
+
+    .event-list { list-style: none; }
+    .event-item {
+      display: flex;
+      gap: 0.9rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--parchment-mid);
+    }
+    .event-item:last-child { border-bottom: none; }
+    .event-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.35rem;
+    }
+    .event-info { }
+    .event-info a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--purple-deep);
+      text-decoration: none;
+      line-height: 1.3;
+      display: block;
+      margin-bottom: 0.2rem;
+      transition: color 0.2s;
+    }
+    .event-info a:hover { color: var(--purple-vivid); }
+    .event-info time {
+      font-size: 0.7rem;
+      color: var(--gray-mid);
+      letter-spacing: 0.04em;
+    }
+
+    /* GIVING BANNER */
+    .giving-banner {
+      background: var(--purple-deep);
+      padding: 4rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .giving-banner::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(200,168,75,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .giving-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .giving-text {}
+    .giving-text .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .giving-text .eyebrow::before {
+      content: '';
+      width: 20px;
+      height: 2px;
+      background: var(--gold);
+      display: inline-block;
+    }
+    .giving-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+    .giving-text p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.9rem;
+      line-height: 1.65;
+      max-width: 480px;
+      font-weight: 300;
+    }
+    .giving-actions { display: flex; gap: 1rem; flex-wrap: wrap; flex-shrink: 0; }
+
+    /* FOOTER */
+    footer {
+      background: #120B26;
+      color: rgba(255,255,255,0.6);
+      padding: 4rem 2.5rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 220px repeat(4, 1fr);
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand .logo { margin-bottom: 1rem; }
+    .footer-brand .logo-text .catholic,
+    .footer-brand .logo-text .richmond { color: var(--white); }
+    .footer-brand p {
+      font-size: 0.78rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .footer-col h4 {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.55rem; }
+    .footer-col ul li a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.78rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--white); }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-bottom p { font-size: 0.72rem; }
+    .footer-bottom-links { display: flex; gap: 1.5rem; }
+    .footer-bottom-links a {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-bottom-links a:hover { color: var(--white); }
+
+    .footer-contact {
+      margin-top: 0.6rem;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.4);
+      display: flex;
+      gap: 2rem;
+    }
+    .footer-contact a { color: rgba(255,255,255,0.4); text-decoration: none; }
+    .footer-contact a:hover { color: var(--white); }
+
+    /* SVG shield placeholder for logo */
+    .shield-svg {
+      width: 44px;
+      height: 52px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .nav-inner { padding: 0 1.5rem; }
+      .nav-toggle { display: inline-flex; }
+      nav ul {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: var(--white);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.25s ease;
+      }
+      nav ul.nav-open { max-height: 400px; }
+      nav ul li a { display: block; padding: 0.9rem 1.5rem; border-radius: 0; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .news-inner { grid-template-columns: 1fr; }
+      .news-sidebar { display: none; }
+      .quick-strip-inner { grid-template-columns: repeat(2, 1fr); }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+      .giving-inner { flex-direction: column; }
+    }
+
+    @media (max-width: 600px) {
+      .hero { height: 70vh; }
+      .hero-content { padding: 0 1.5rem 3rem; }
+      .featured, .news-section, .giving-banner { padding: 3rem 1.5rem; }
+      .quick-strip-inner { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Utility Bar -->
+  <div class="util-bar">
+    <a href="#">Ethical Reporting</a>
+    <a href="#">Protecting God's Children</a>
+    <a href="#" class="donate-btn">Donate</a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <!-- Diocesan Shield SVG -->
+        <svg class="shield-svg" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 2L3 10V28C3 39 22 50 22 50C22 50 41 39 41 28V10L22 2Z" fill="#3D1A5F" stroke="#C8A84B" stroke-width="1.5"/>
+          <path d="M22 8L9 14V28C9 36.5 22 45 22 45C22 45 35 36.5 35 28V14L22 8Z" fill="#1A1035"/>
+          <!-- Cross -->
+          <line x1="22" y1="14" x2="22" y2="40" stroke="#C8A84B" stroke-width="2"/>
+          <line x1="12" y1="24" x2="32" y2="24" stroke="#C8A84B" stroke-width="2"/>
+          <!-- Small crown hint -->
+          <circle cx="22" cy="8" r="2" fill="#C8A84B"/>
+        </svg>
+        <div class="logo-text">
+          <span class="catholic">Catholic</span>
+          <span class="diocese-of">Diocese of</span>
+          <span class="richmond">Richmond</span>
+        </div>
+      </a>
+
+      <nav>
+        <ul id="primary-nav">
+          <li><a href="#">Our Parishes</a></li>
+          <li><a href="#">Our Schools</a></li>
+          <li><a href="#">Directory</a></li>
+          <li><a href="#">News &amp; Events</a></li>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Giving</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-icons">
+        <!-- Location icon -->
+        <button aria-label="Find a parish near me">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </button>
+        <!-- Search icon -->
+        <button aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <!-- Mobile nav toggle -->
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primary-nav">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-eyebrow">
+          <div class="hero-rule"></div>
+          <span>Diocesan Pilgrimage · October 2026</span>
+        </div>
+        <h1>Journey Together<br>to the National<br>Basilica</h1>
+        <p>Bishop Knestout invites all the faithful on a diocesan pilgrimage to the Basilica of the National Shrine of the Immaculate Conception on October 24, 2026.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn-primary">
+            Register Now
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#" class="btn-ghost">Learn More</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- Quick Links Strip -->
+  <div class="quick-strip">
+    <div class="quick-strip-inner">
+      <a href="#" class="quick-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Find a Parish
+      </a>
+      <a href="#" class="quick-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Mass Times
+      </a>
+      <a href="#" class="quick-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Contact Us
+      </a>
+      <a href="#" class="quick-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Victim Assistance
+      </a>
+    </div>
+  </div>
+
+  <!-- Featured Cards -->
+  <section class="featured">
+    <div class="featured-inner">
+      <div class="section-header">
+        <div>
+          <div class="section-label">
+            <div class="gold-rule"></div>
+            <span>Featured</span>
+          </div>
+          <h2 class="section-title">What's Happening<br>in Our Diocese</h2>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Card 1: Diocesan Pilgrimage -->
+        <div class="card">
+          <div class="card-img-placeholder pilgrimage">
+            <svg width="64" height="64" viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="30" r="18" stroke="#C8A84B" stroke-width="2" fill="none"/>
+              <path d="M20 80 Q50 40 80 80" stroke="#C8A84B" stroke-width="2" fill="none"/>
+              <path d="M35 65 Q50 50 65 65" stroke="#C8A84B" stroke-width="1.5" fill="none"/>
+              <line x1="50" y1="12" x2="50" y2="48" stroke="#C8A84B" stroke-width="2"/>
+              <line x1="38" y1="28" x2="62" y2="28" stroke="#C8A84B" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-eyebrow">October 24, 2026</p>
+            <h3>Diocesan Pilgrimage to the National Basilica</h3>
+            <p>Bishop Barry C. Knestout invites all to the Basilica of the National Shrine of the Immaculate Conception for the Diocesan Pilgrimage.</p>
+            <div class="card-actions">
+              <a href="#" class="btn-card gold">Register</a>
+              <a href="#" class="btn-card outline">Learn More</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Faith in America -->
+        <div class="card">
+          <div class="card-img-placeholder faith">
+            <svg width="64" height="64" viewBox="0 0 100 100" fill="none">
+              <path d="M50 15 L58 35 L80 35 L63 50 L70 70 L50 57 L30 70 L37 50 L20 35 L42 35 Z" stroke="#C8A84B" stroke-width="2" fill="none"/>
+              <circle cx="50" cy="50" r="35" stroke="rgba(200,168,75,0.3)" stroke-width="1" fill="none"/>
+              <path d="M25 50 L35 40 L45 48 L55 35 L65 45 L75 38" stroke="#E4C97A" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-eyebrow">250th Anniversary</p>
+            <h3>Faith in America: 250 Years of Catholic Life</h3>
+            <p>The USCCB celebrates the contributions of Catholics over the last 250 years. This June, the U.S. will be consecrated to the Sacred Heart of Jesus.</p>
+            <div class="card-actions">
+              <a href="#" class="btn-card gold">Learn More</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Safe Environment -->
+        <div class="card">
+          <div class="card-img-placeholder safe">
+            <svg width="64" height="64" viewBox="0 0 100 100" fill="none">
+              <path d="M50 10 L20 22 L20 52 C20 68 50 90 50 90 C50 90 80 68 80 52 L80 22 Z" stroke="#C8A84B" stroke-width="2" fill="none"/>
+              <path d="M35 50 L45 60 L65 38" stroke="#C8A84B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-eyebrow">Our Commitment</p>
+            <h3>Safe Environment &amp; Victim Assistance</h3>
+            <p>Our commitment to providing a safe and nurturing environment for those entrusted in our care, and supporting survivors of abuse.</p>
+            <div class="card-actions">
+              <a href="#" class="btn-card gold">Victim Assistance</a>
+              <a href="#" class="btn-card outline">Safe Environment</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News + Sidebar -->
+  <section class="news-section">
+    <div class="news-inner">
+      <div>
+        <div class="section-header" style="margin-bottom: 2rem;">
+          <div>
+            <div class="section-label">
+              <div class="gold-rule"></div>
+              <span>Recent News</span>
+            </div>
+            <h2 class="section-title">From the Diocese</h2>
+          </div>
+        </div>
+
+        <ul class="news-list">
+          <li class="news-item">
+            <div class="news-date">
+              <span class="day">22</span>
+              <span class="month">Jun 2026</span>
+            </div>
+            <div class="news-content">
+              <p class="news-category">Statement</p>
+              <h4><a href="#">Bishop Thomas' Statement on the Anniversary of the Dobbs Decision</a></h4>
+              <p class="news-excerpt">Reflecting on four years since the Dobbs v. Jackson decision, Bishop Thomas reaffirms the diocese's commitment to a culture of life at every stage.</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <div class="news-date">
+              <span class="day">22</span>
+              <span class="month">Jun 2026</span>
+            </div>
+            <div class="news-content">
+              <p class="news-category">International</p>
+              <h4><a href="#">Bishop Zaidan Expresses Hope for Deeper Dialogue and Peace Following U.S.—Iran Agreement</a></h4>
+              <p class="news-excerpt">Commending the recent agreement between the United States and Iran, Bishop Zaidan calls for continued peaceful dialogue.</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <div class="news-date">
+              <span class="day">15</span>
+              <span class="month">Jun 2026</span>
+            </div>
+            <div class="news-content">
+              <p class="news-category">USCCB</p>
+              <h4><a href="#">Recap of U.S. Bishops' Plenary Assembly in Orlando</a></h4>
+              <p class="news-excerpt">A summary of the decisions and discussions from the United States Conference of Catholic Bishops' spring plenary assembly.</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <div class="news-date">
+              <span class="day">26</span>
+              <span class="month">May 2026</span>
+            </div>
+            <div class="news-content">
+              <p class="news-category">Diocese</p>
+              <h4><a href="#">Clergy Assignments 2026</a></h4>
+              <p class="news-excerpt">The annual list of clergy assignments for the Catholic Diocese of Richmond, effective July 1, 2026.</p>
+            </div>
+          </li>
+          <li class="news-item">
+            <div class="news-date">
+              <span class="day">26</span>
+              <span class="month">May 2026</span>
+            </div>
+            <div class="news-content">
+              <p class="news-category">Papal</p>
+              <h4><a href="#">Archbishop Coakley Welcomes Pope Leo XIV's Encyclical <em>Magnifica Humanitas</em></a></h4>
+              <p class="news-excerpt">Archbishop Coakley offers a warm reception to the Holy Father's newest encyclical, exploring its themes for the American Church.</p>
+            </div>
+          </li>
+        </ul>
+
+        <a href="#" class="news-see-more">
+          See all news
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="news-sidebar">
+        <div class="sidebar-block parish-search">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Find a Parish
+          </h3>
+          <input type="text" placeholder="Enter ZIP code or city…" />
+          <a href="#" class="btn-card gold" style="width:100%; justify-content:center; display:flex;">
+            Search Parishes
+          </a>
+        </div>
+
+        <div class="sidebar-block">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Upcoming Events
+          </h3>
+          <ul class="event-list">
+            <li class="event-item">
+              <div class="event-dot"></div>
+              <div class="event-info">
+                <a href="#">Diocesan Pilgrimage to National Basilica</a>
+                <time>October 24, 2026</time>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-dot"></div>
+              <div class="event-info">
+                <a href="#">Annual Diocesan Appeal Kickoff</a>
+                <time>September 7, 2026</time>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-dot"></div>
+              <div class="event-info">
+                <a href="#">Back to School Mass — All Catholic Schools</a>
+                <time>August 25, 2026</time>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-dot"></div>
+              <div class="event-info">
+                <a href="#">Safe Environment Training — Richmond</a>
+                <time>August 12, 2026</time>
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="news-see-more" style="font-size: 0.68rem;">View calendar →</a>
+        </div>
+
+        <div class="sidebar-block" style="background: var(--purple-deep); border-color: transparent;">
+          <h3 style="color: var(--gold);">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            The Catholic Virginian
+          </h3>
+          <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 1rem;">Read the latest issue of Virginia's Catholic newspaper, serving the diocese since 1931.</p>
+          <a href="#" class="btn-card gold" style="width:100%; justify-content:center; display:flex;">Read Latest Issue</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Giving Banner -->
+  <section class="giving-banner">
+    <div class="giving-inner">
+      <div class="giving-text">
+        <p class="eyebrow">Annual Diocesan Appeal</p>
+        <h2>Living Our Mission<br>Together</h2>
+        <p>Your generosity sustains the ministries, schools, and services that make our diocese a community of faith, hope, and charity for all Virginians.</p>
+      </div>
+      <div class="giving-actions">
+        <a href="#" class="btn-primary">
+          Give Now
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </a>
+        <a href="#" class="btn-ghost">Learn About Giving</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="logo" style="margin-bottom: 1rem; display: flex;">
+            <svg class="shield-svg" viewBox="0 0 44 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 2L3 10V28C3 39 22 50 22 50C22 50 41 39 41 28V10L22 2Z" fill="#3D1A5F" stroke="#C8A84B" stroke-width="1.5"/>
+              <path d="M22 8L9 14V28C9 36.5 22 45 22 45C22 45 35 36.5 35 28V14L22 8Z" fill="#1A1035"/>
+              <line x1="22" y1="14" x2="22" y2="40" stroke="#C8A84B" stroke-width="2"/>
+              <line x1="12" y1="24" x2="32" y2="24" stroke="#C8A84B" stroke-width="2"/>
+              <circle cx="22" cy="8" r="2" fill="#C8A84B"/>
+            </svg>
+            <div class="logo-text" style="margin-left: 0.75rem;">
+              <span class="catholic">Catholic</span>
+              <span class="diocese-of" style="color: rgba(255,255,255,0.4);">Diocese of</span>
+              <span class="richmond">Richmond</span>
+            </div>
+          </a>
+          <p>Serving the faithful of Virginia since 1820 — 92 parishes and missions across the Commonwealth.</p>
+          <div class="footer-contact" style="margin-top: 1rem;">
+            <a href="tel:8043595661">804-359-5661</a>
+            <a href="#">7800 Carousel Lane, Richmond VA 23294</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Our Parishes</h4>
+          <ul>
+            <li><a href="#">Our Parishes</a></li>
+            <li><a href="#">Find My Parish / Mass Times</a></li>
+            <li><a href="#">Holy Days of Obligation</a></li>
+            <li><a href="#">Senior Living</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Our Schools</h4>
+          <ul>
+            <li><a href="#">Our Schools</a></li>
+            <li><a href="#">School Locator</a></li>
+            <li><a href="#">Support Our Schools</a></li>
+            <li><a href="#">Tuition Assistance</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>News &amp; Events</h4>
+          <ul>
+            <li><a href="#">News &amp; Events</a></li>
+            <li><a href="#">The Catholic Virginian</a></li>
+            <li><a href="#">Press Releases</a></li>
+            <li><a href="#">Calendar of Events</a></li>
+            <li><a href="#">Directory</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Giving</h4>
+          <ul>
+            <li><a href="#">Giving</a></li>
+            <li><a href="#">Living Our Mission</a></li>
+            <li><a href="#">Annual Diocesan Appeal</a></li>
+            <li><a href="#">McMahon Parater Scholarship</a></li>
+            <li><a href="#">Planned Giving</a></li>
+            <li><a href="#">Volunteer</a></li>
+          </ul>
+          <a href="#" class="btn-card gold" style="margin-top: 1rem; display: inline-flex;">Directory</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Copyright 2026 · Catholic Diocese of Richmond</p>
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Ethical Reporting</a>
+          <a href="#">Extranet</a>
+          <a href="#">Intranet</a>
+          <a href="#">Office365</a>
+          <a href="#">ParishSoft</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const toggle = document.getElementById('nav-toggle');
+      const nav = document.getElementById('primary-nav');
+      if (!toggle || !nav) return;
+
+      toggle.addEventListener('click', function () {
+        const isOpen = nav.classList.toggle('nav-open');
+        toggle.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      nav.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') {
+          nav.classList.remove('nav-open');
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
