@@ -1,0 +1,37 @@
+---
+import { useStoryblokApi } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const storyblokApi = useStoryblokApi();
+const { data } = await storyblokApi.get('cdn/stories/home', {
+  version: import.meta.env.DEV ? 'draft' : 'published',
+});
+const story = data.story;
+---
+
+<Layout>
+  <Header />
+  <main>
+    {story.content.body.map((blok: any) => (
+      <StoryblokComponent blok={blok} />
+    ))}
+  </main>
+  <Footer />
+</Layout>
+
+{import.meta.env.DEV && (
+  <script>
+    import { loadStoryblokBridge } from '@storyblok/astro';
+
+    loadStoryblokBridge().then(() => {
+      const { StoryblokBridge } = window as any;
+      const bridge = new StoryblokBridge();
+      bridge.on(['input', 'published', 'change'], () => {
+        window.location.reload();
+      });
+    });
+  </script>
+)}

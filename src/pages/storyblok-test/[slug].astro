@@ -1,0 +1,47 @@
+---
+import { useStoryblokApi } from '@storyblok/astro';
+import StoryblokComponent from '@storyblok/astro/StoryblokComponent.astro';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export async function getStaticPaths() {
+  const storyblokApi = useStoryblokApi();
+  const { data } = await storyblokApi.get('cdn/stories', {
+    version: 'published',
+    content_type: 'project',
+  });
+  return data.stories.map((story: any) => ({
+    params: { slug: story.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const storyblokApi = useStoryblokApi();
+const { data } = await storyblokApi.get(`cdn/stories/${slug}`, {
+  version: import.meta.env.DEV ? 'draft' : 'published',
+});
+const story = data.story;
+---
+
+<Layout title={`${story.content.title} — Storyblok test`}>
+  <Header />
+  <main>
+    <StoryblokComponent blok={story.content} />
+  </main>
+  <Footer />
+</Layout>
+
+{import.meta.env.DEV && (
+  <script>
+    import { loadStoryblokBridge } from '@storyblok/astro';
+
+    loadStoryblokBridge().then(() => {
+      const { StoryblokBridge } = window as any;
+      const bridge = new StoryblokBridge();
+      bridge.on(['input', 'published', 'change'], () => {
+        window.location.reload();
+      });
+    });
+  </script>
+)}

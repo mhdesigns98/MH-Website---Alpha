@@ -7,9 +7,11 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "migrate:storyblok": "node scripts/migrate-to-storyblok.mjs"
   },
   "dependencies": {
+    "@storyblok/astro": "^10.3.0",
     "astro": "^4.15.0"
   }
 }
