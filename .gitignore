@@ -24,3 +24,12 @@ pnpm-debug.log*
 
 # editor
 .vscode/
+
+# emdash / wrangler local state
+.emdash/migrations.json
+.wrangler/
+.dev.vars
+.dev.vars.*
+data.db
+data.db-journal
+uploads/

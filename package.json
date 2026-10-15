@@ -1,15 +1,39 @@
 {
   "name": "mh-designs",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "private": true,
+  "emdash": {
+    "label": "MH Designs",
+    "seed": "seed/seed.json"
+  },
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "deploy": "astro build && wrangler deploy",
+    "typecheck": "astro check",
+    "astro": "astro",
+    "seed:build": "node scripts/build-seed.mjs"
   },
   "dependencies": {
-    "astro": "^4.15.0"
+    "@astrojs/cloudflare": "^14.3.1",
+    "@astrojs/react": "^6.0.5",
+    "@emdash-cms/cloudflare": "^1.0.1",
+    "astro": "^7.3.2",
+    "emdash": "^1.0.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20260820.1",
+    "wrangler": "^4.125.0",
+    "yaml": "^2.9.1"
+  },
+  "allowScripts": {
+    "workerd@1.20261012.1": true,
+    "esbuild@0.28.2": true
   }
 }
