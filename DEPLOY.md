@@ -1,54 +1,55 @@
 # Deploying MH Designs
 
-## Local Development
+The site runs on [EmDash](https://github.com/emdash-cms/emdash), a CMS built on Astro, as a
+Cloudflare Worker on the **personal** Cloudflare account (wrangler profile `personal`, pinned
+by `account_id` in `wrangler.jsonc`). Content lives in D1, media in R2.
+
+## Local development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Opens at http://localhost:4321
+- Site: http://localhost:4321
+- Admin: http://localhost:4321/_emdash/admin
 
----
+`.env` must contain `EMDASH_ENCRYPTION_KEY` (generate one with `npx emdash secrets generate`).
+The first time, the admin opens a setup screen. Pick **Sample content** to load the projects
+from `seed/seed.json`.
 
-## Deploying to Vercel (Recommended — Free)
+## Editing content
 
-1. Push this folder to a GitHub repo (github.com → New repository)
-2. Go to vercel.com → Sign in with GitHub → "Add New Project"
-3. Select your repo — Vercel auto-detects Astro, no config needed
-4. Hit Deploy. Done.
+Add and edit projects in the admin, not in files. Fields map to the old frontmatter:
+title, tagline (shows on cards), description (SEO), category, tags (comma-separated),
+status, live URL, featured, sort order (1 = first), accent color, and password protection.
 
-Every time you push to GitHub, Vercel auto-redeploys.
+To lock a project, turn on **Password protected** and set a **Password**. The check runs on
+the server, so locked content is never sent to the browser. Changing the password signs out
+everyone who unlocked it before.
 
----
+`seed/projects/*.md` and `scripts/build-seed.mjs` only seed an empty database. Run
+`npm run seed:build` after changing them.
 
-## Deploying to Cloudflare Pages (Also Free)
+## Deploying
 
-1. Push to GitHub
-2. Go to dash.cloudflare.com → Workers & Pages → Create → Pages → Connect to Git
-3. Select your repo
-4. Build settings:
-   - Build command: `npm run build`
-   - Build output: `dist`
-5. Deploy.
+```bash
+cd ~/Projects/personal/MH-Website---Alpha
+npx wrangler auth activate personal .   # once per checkout
+npx wrangler whoami                      # must show the personal account
+npm run deploy
+```
 
----
+First deploy only: create the database and bucket, then upload the key.
 
-## Adding a New Project
+```bash
+npx wrangler d1 create mh-website        # copy database_id into wrangler.jsonc
+npx wrangler r2 bucket create mh-website-media
+npx wrangler secret put EMDASH_ENCRYPTION_KEY
+```
 
-1. Create a new file in `src/content/projects/your-project-name.md`
-2. Copy the frontmatter from an existing project and update the fields
-3. Write your project description below the `---` in markdown
-4. Push to GitHub — it deploys automatically
+Then open `/_emdash/admin` on the live site, choose **Sample content**, and create the admin
+account with a passkey.
 
-### Frontmatter fields:
-- `title` — Project name
-- `tagline` — One-line description (shows on cards)
-- `description` — Longer description for SEO
-- `category` — One of: Gaming Tool, Web Design, Podcast, Documentary, Dev Tool, Branding
-- `tags` — Array of tech/skill tags
-- `status` — Live, In Progress, or Concept
-- `url` — Optional live URL
-- `featured` — true/false
-- `order` — Number controlling sort order (1 = first)
-- `accent` — Hex color for the card's glow effect
+Free plan notes: sandboxed marketplace plugins need Workers Paid, so `worker_loaders` stays
+commented out. Each request gets 10ms of CPU on the free plan.

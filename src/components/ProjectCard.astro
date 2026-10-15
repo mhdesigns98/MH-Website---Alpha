@@ -5,13 +5,12 @@ interface Props {
   category: string;
   tags: string[];
   status: string;
-  url?: string;
   slug: string;
   accent: string;
   protected?: boolean;
 }
 
-const { title, tagline, category, tags, status, url, slug, accent, protected: isProtected } = Astro.props;
+const { title, tagline, category, tags, status, slug, accent, protected: isProtected } = Astro.props;
 
 const statusClass = {
   'Live': 'live',
