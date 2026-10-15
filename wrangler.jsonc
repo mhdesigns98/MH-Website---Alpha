@@ -10,6 +10,7 @@
 		{
 			"binding": "DB",
 			"database_name": "mh-website",
+			"database_id": "64172145-4555-46e7-9c65-fd3ca16c6106",
 		},
 	],
 	"r2_buckets": [
