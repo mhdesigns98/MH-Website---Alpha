@@ -4,7 +4,7 @@
 	// Personal Cloudflare account only (wrangler profile "personal")
 	"account_id": "838eca9efa4f66d164c7ff79a7f37263",
 	"main": "./src/worker.ts",
-	"compatibility_date": "2026-02-24",
+	"compatibility_date": "2026-10-15",
 	"compatibility_flags": ["nodejs_compat"],
 	"d1_databases": [
 		{
@@ -21,6 +21,8 @@
 	],
 	// Sandboxed plugins need Worker Loader, which is Workers Paid only.
 	// "worker_loaders": [{ "binding": "LOADER" }],
+	// Cache in front of the Worker; astro.config.mjs sets what gets cached.
+	"cache": { "enabled": true },
 	"triggers": {
 		"crons": ["* * * * *"],
 	},

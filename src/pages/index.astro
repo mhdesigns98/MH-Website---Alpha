@@ -11,7 +11,10 @@ const { entries: projects, error, cacheHint } = await getEmDashCollection('proje
   status: 'published',
   orderBy: { order: 'asc' },
 });
-if (error) return new Response('Could not load projects', { status: 500 });
+if (error) {
+  Astro.cache?.set(false);
+  return new Response('Could not load projects', { status: 500 });
+}
 if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 ---
 

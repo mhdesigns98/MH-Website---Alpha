@@ -6,12 +6,19 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import { safeEqual, splitTags, statusClass, unlockCookieName, unlockToken } from '../../lib/projects';
 
+// Only a rendered project gets cached. A cached 404 redirect would hide a
+// project for the cache lifetime after it's published.
+const uncached = (response: Response) => {
+  Astro.cache?.set(false);
+  return response;
+};
+
 const slug = decodeSlug(Astro.params.slug);
-if (!slug) return Astro.redirect('/404');
+if (!slug) return uncached(Astro.redirect('/404'));
 
 const { entry: project, error, cacheHint } = await getEmDashEntry('projects', slug);
-if (error) return new Response('Could not load the project', { status: 500 });
-if (!project) return Astro.redirect('/404');
+if (error) return uncached(new Response('Could not load the project', { status: 500 }));
+if (!project) return uncached(Astro.redirect('/404'));
 
 const {
   title,
@@ -32,6 +39,7 @@ let gateError = '';
 if (isProtected) {
   // Responses vary per visitor, so they must never be cached or indexed.
   Astro.response.headers.set('Cache-Control', 'private, no-store');
+  Astro.cache?.set(false);
   const cookieName = unlockCookieName(slug);
 
   if (!password) {
@@ -53,7 +61,7 @@ if (isProtected) {
           sameSite: 'lax',
           maxAge: 60 * 60 * 24 * 30,
         });
-        return Astro.redirect(`/projects/${slug}`, 303);
+        return uncached(Astro.redirect(`/projects/${slug}`, 303));
       }
       gateError = 'Incorrect password.';
       Astro.response.status = 401;
