@@ -1,107 +1,124 @@
-This is an EmDash site -- a CMS built on Astro with a full admin UI.
+MH Designs, Mike Hayes's portfolio. An Astro site with the EmDash CMS, running as a Cloudflare
+Worker (`mh-website`) on the **personal** Cloudflare account. Live at
+https://mh-website.mikehayesdesign.workers.dev. Deploy steps, first-deploy migrations and caching
+are in [DEPLOY.md](DEPLOY.md).
 
 ## Commands
 
 ```bash
-npm run dev              # Start the Astro dev server
-npx emdash types      # Regenerate TypeScript types from a running site
+npm run dev           # Astro dev server, http://localhost:4321 (admin at /_emdash/admin)
+npm run build         # production build
+npm run typecheck     # astro check
+npm run deploy        # build + wrangler deploy (personal account only)
+npm run seed:build    # regenerate seed/seed.json from seed/projects/*.md
+npx emdash types      # regenerate emdash-env.d.ts from a running site
+npx wrangler types    # regenerate worker-configuration.d.ts after editing wrangler.jsonc
 ```
 
-The admin UI is at `http://localhost:4321/_emdash/admin`.
+Before any `wrangler` write, run `npx wrangler whoami` in this folder and confirm the personal
+account (`838eca9e…`). The folder is bound to the wrangler auth profile `personal`, and
+`account_id` is pinned in `wrangler.jsonc`.
 
-## Key Files
+## Key files
 
-| File                     | Purpose                                                                            |
-| ------------------------ | ---------------------------------------------------------------------------------- |
-| `astro.config.mjs`       | Astro config with `emdash()` integration, database, and storage                    |
-| `src/live.config.ts`     | EmDash loader registration (boilerplate -- don't modify)                           |
-| `seed/seed.json`         | Schema definition + demo content (collections, fields, taxonomies, menus, widgets) |
-| `emdash-env.d.ts`        | Generated types for collections (auto-regenerated on dev server start)             |
-| `src/layouts/Base.astro` | Base layout with EmDash wiring (menus, search, page contributions)                 |
-| `src/pages/`             | Astro pages -- all server-rendered                                                 |
+| File                              | Purpose                                                                  |
+| --------------------------------- | ------------------------------------------------------------------------ |
+| `astro.config.mjs`                | Cloudflare adapter, `emdash()` with D1 + R2, Workers Cache route rules   |
+| `wrangler.jsonc`                  | Worker name, account, D1/R2 bindings, `cache`, cron trigger              |
+| `src/live.config.ts`              | EmDash loader registration (boilerplate, don't modify)                   |
+| `src/worker.ts`                   | Worker entry with EmDash's scheduled handler (boilerplate)               |
+| `src/layouts/Layout.astro`        | Page shell with the EmDash head/body hooks                               |
+| `src/lib/projects.ts`             | Tag splitting, status classes, password-gate signing                     |
+| `src/pages/index.astro`           | Home: hero, Selected Work grid, About                                    |
+| `src/pages/projects/[slug].astro` | Project detail and the server-side password gate                         |
+| `src/components/`                 | `Header`, `Hero`, `ProjectCard`, `Footer`                                |
+| `src/styles/global.css`           | Design tokens and base styles                                            |
+| `seed/projects/*.md`              | Original project write-ups, the source for the seed                      |
+| `scripts/build-seed.mjs`          | Builds `seed/seed.json` (schema + content) from those markdown files     |
+| `emdash-env.d.ts`                 | Generated collection types (regenerated on dev server start)             |
 
-## Skills
+## Content model
 
-Agent skills are in `.agents/skills/`. Load them when working on specific tasks:
+One collection, `projects`. Fields (slug: type):
 
-- **building-emdash-site** -- Querying content, rendering Portable Text, schema design, seed files, site features (menus, widgets, search, SEO, comments, bylines). Start here.
-- **creating-plugins** -- Building EmDash plugins with hooks, storage, admin UI, API routes, and Portable Text block types.
-- **emdash-cli** -- CLI commands for content management, seeding, type generation, and visual editing flow.
+- `title`: string, required
+- `tagline`: text, required. Shows on cards and under the project title.
+- `description`: text. SEO description.
+- `category`: select, one of Gaming Tool, Web Design, Podcast, Documentary, Dev Tool, Branding
+- `tags`: string, comma-separated. Use `splitTags()` from `src/lib/projects.ts`.
+- `project_status`: select, one of Live, In Progress, Concept. Named so it doesn't clash with
+  EmDash's own `status` (draft/published).
+- `url`: url. Live site link, rendered only if it's http(s).
+- `featured`: boolean
+- `order`: integer. The home grid sorts by it ascending (1 = first).
+- `accent`: string, a hex color for the card glow and project hero
+- `protected`: boolean, and `access_password`: string. See Password gate.
+- `content`: Portable Text. Render with `<PortableText>` from `emdash/ui`.
 
-## Documentation
+There are no image fields, pages collection, taxonomies or menus. Hero and About copy are
+written into `Hero.astro` and `index.astro`, not stored in the CMS.
 
-The EmDash docs are available as an MCP server at `https://docs.emdashcms.com/mcp`. When you need to verify an API, hook, config option, field type, or pattern, call `search_docs` against the live documentation rather than relying on training-data recall. The docs reflect current behaviour; assumptions may not.
-
-This template ships with `.mcp.json`, `.cursor/mcp.json`, and `.vscode/mcp.json` so Claude Code, Cursor, and VS Code auto-discover the docs server. Other tools (OpenCode, Windsurf, etc.) need a manual one-time setup -- see [docs.emdashcms.com/docs-mcp](https://docs.emdashcms.com/docs-mcp).
-
-## Rules
-
-- All content pages must be server-rendered (`output: "server"`). No `getStaticPaths()` for CMS content.
-- Image fields are objects (`{ src, alt }`), not strings. Use `<Image image={...} />` from `"emdash/ui"`.
-- `entry.id` is the slug (for URLs). `entry.data.id` is the database ULID (for API calls like `getEntryTerms`).
-- When Astro's cache is enabled, pass content-query hints to `Astro.cache.set(cacheHint)`. Use the `WithCacheHint` variants for site settings, menus, taxonomies, and widget areas rendered by cached routes.
-- Taxonomy names in queries must match the seed's `"name"` field exactly (e.g., `"category"` not `"categories"`).
-
-## This Template
-
-A portfolio for showcasing creative work. Editorial, near-monochrome, with photography as the main visual interest. Designed for designers, photographers, illustrators, studios, and other people whose work speaks for itself when laid out with generous whitespace.
-
-The design is intentionally restrained. Don't pile on colour, gradients, or decoration -- the work is the decoration.
+Edit content in the admin. The seed only applies to an empty database on first setup, so
+changing `seed/projects/*.md` does nothing to a live site.
 
 ## Pages
 
-| Page           | Path           | What it shows                                                                                          |
-| -------------- | -------------- | ------------------------------------------------------------------------------------------------------ |
-| Home           | `/`            | Centred serif title + tagline, "Selected Work" grid                                                    |
-| Work index     | `/work`        | Heading + summary, tag filter chips, full grid                                                         |
-| Project detail | `/work/[slug]` | Project meta line, big serif title, summary, featured image, Portable Text body, optional gallery, URL |
-| About          | `/about`       | Page content (Portable Text)                                                                           |
-| Contact        | `/contact`     | Direct email call to action                                                                            |
+| Path               | What it shows                                                           |
+| ------------------ | ----------------------------------------------------------------------- |
+| `/`                | Hero, "Selected Work" grid of published projects, About with stat panel |
+| `/projects/[slug]` | Category and status, title, tagline, tags, Visit site button, body      |
 
-## Schema
+Unknown slugs redirect to `/404`. URLs are `/projects/...` (not the template's `/work/...`); keep
+them stable.
 
-- `projects` collection: `title`, `featured_image`, `client`, `year`, `summary` (text), `content` (Portable Text), `gallery` (repeater of media-library image + optional caption), `url`.
-- `pages` collection: `title`, `content` (Portable Text). Used for `/about`.
-- Taxonomy: `tag`. Used for filtering and project metadata on the work index.
-- Single `primary` menu.
+## Password gate
 
-Site settings have `title` and `tagline` -- both render on the home page (title as the centred serif heading, tagline as italic subtitle).
+A project with `protected` on is checked on the server. The content is never rendered until the
+visitor posts the right password, which sets an HttpOnly cookie signed with
+`EMDASH_ENCRYPTION_KEY` and scoped to that project's path. The signature includes the password,
+so changing it relocks everyone. A protected project with no password stays locked.
 
-The `gallery` field is a repeater. Each row contains a required `image` selected from the EmDash media library and an optional `caption`. Render gallery images with `<Image>` from `emdash/ui`; do not reduce media values to raw URLs.
+Locked and unlocked responses must stay `Cache-Control: private, no-store` with
+`Astro.cache.set(false)`. Don't move the check to the client.
 
-The contact page sends visitors to their email app instead of accepting a form submission. Replace the example address in `src/pages/contact.astro` before publishing the site.
+## Caching
 
-## Visual character
+Workers Cache serves `/` and `/projects/[slug]` (10 min fresh, 1 h stale-while-revalidate, set in
+`routeRules`). Rules when touching these routes:
 
-Typography is the design. The display face is **Playfair Display** (serif) on the `--font-heading` CSS variable; the body face is the system sans stack on `--font-body`. The serif is used for the site title, hero titles, project titles, page titles, and contact column labels. Everything else is the sans. Serif weight is calm on purpose (`--font-weight-heading` and `--font-weight-display` both default to 500).
+- Pass content-query hints with `Astro.cache.set(cacheHint)` so publishing purges the page.
+- Call `Astro.cache.set(false)` for anything visitor-specific, and for redirects and errors (a
+  cached 404 redirect would hide a newly published project).
+- EmDash already skips the cache for signed-in admins.
 
-The brand colour is barely visible by design -- the only saturated colour on the page should be inside images. The default `--color-brand` (`#7c3aed`) is used sparingly for link hover and focus states.
+Cache misses use roughly 50 to 130 ms of CPU against the free plan's 10 ms limit, so keep
+per-request work small.
 
-Whitespace is generous. Sections breathe. Don't fight that.
+## Design
 
-## Customisation
+Dark, technical, with one cyan accent. These come from `src/styles/global.css`, not the EmDash
+template; the template's `tokens.css`, `theme.css` and `Base.astro` aren't used here.
 
-Design tokens live in `src/styles/tokens.css` with their default values. To restyle the site, override tokens in `src/styles/theme.css` -- declarations there are unlayered, so they always beat the `@layer base` defaults. Don't edit `tokens.css` or `Base.astro` for visual changes.
+- Tokens: `--bg #080810`, `--surface`, `--surface-2`, `--border`, `--text`, `--muted`,
+  `--accent #00d9ff`, `--accent-glow`, radii `--radius-sm/md/lg`, `--transition`.
+- Type: Space Grotesk for headings and UI labels (`--font-head`), Inter for body
+  (`--font-body`), loaded from Google Fonts in `global.css`.
+- Each project has its own `accent` that tints its card glow and hero glow. Keep the site accent
+  cyan and let project accents carry any other color.
+- Layout lives in `.container` (see `global.css`). Cards are rounded surfaces with a hairline
+  border. The home grid is `repeat(auto-fill, minmax(320px, 1fr))`.
 
-Colours are defined with `light-dark(<light>, <dark>)`, so each token carries both modes. Overriding with a plain colour changes light and dark at once; use `light-dark()` in the override to keep them distinct. There is no separate dark palette to maintain.
+Copy rules for this site: no em dashes in new copy, no invented stats or testimonials, no
+generic CTAs, and every link must go somewhere real.
 
-The display face is configured in `astro.config.mjs` under `fonts:` (the Astro Fonts API). To change it, swap the `name:` for any Google Fonts serif and keep `cssVariable: "--font-heading"`. Good pairings: Cormorant Garamond, Fraunces, EB Garamond, DM Serif Display. The body face (`--font-body`) is a plain token in `tokens.css` -- system sans, deliberately quiet; override it in `theme.css` only if you have a reason.
+## EmDash reference
 
-CSS variables worth knowing (see `tokens.css` for the full list):
+Agent skills are in `.agents/skills/` (`building-emdash-site`, `creating-plugins`,
+`emdash-cli`). They describe the stock template in places. Where they disagree with this file
+about schema, pages or design, this file wins.
 
-- `--color-brand`, `--color-on-brand`, `--color-brand-ring` -- the single accent, used very sparingly
-- `--color-bg`, `--color-surface`, `--color-text`, `--color-muted`, `--color-border` -- neutral palette
-- `--color-danger` -- form errors
-- `--font-heading` (Fonts API entry in `astro.config.mjs`), `--font-body` (token)
-- `--font-weight-heading` / `--font-weight-display` (both 500) -- raise for a heavier serif voice
-- `--font-size-4xl` -- the size of the homepage title and project titles
-- `--max-width` (720px), `--wide-width` (1200px) -- column widths
-
-## What not to do
-
-- Don't introduce gradients, drop shadows on cards, or coloured section backgrounds. The template's voice is calm and editorial; those break it.
-- Don't change `--font-body` to a display font. Two display faces fight each other.
-- Don't add more than one accent colour.
-- Don't write generic copy like "Welcome to my portfolio" or "Crafting beautiful experiences". The work should speak; the words should be specific (a client name, a discipline, a year).
-- Don't pack the home page with every project. The "Selected Work" framing is intentional -- 3-6 is plenty.
-- Don't add a `gallery` of small thumbnails on the home page. Use one strong image per project; the gallery field renders on the project detail page only.
+- No `getStaticPaths()` for CMS content; everything is server-rendered.
+- `entry.id` is the slug (use in URLs); `entry.data.id` is the database ULID.
+- Booleans come back from the database as 0/1; treat them as truthy/falsy.
+- Live docs: the EmDash docs MCP server at `https://docs.emdashcms.com/mcp`. It isn't configured
+  in this repo; see https://docs.emdashcms.com/docs-mcp to add it.
