@@ -1,90 +1,159 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { decodeSlug, getEmDashEntry } from 'emdash';
+import { PortableText } from 'emdash/ui';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { safeEqual, splitTags, statusClass, unlockCookieName, unlockToken } from '../../lib/projects';
 
-export async function getStaticPaths() {
-  const projects = await getCollection('projects');
-  return projects.map(project => ({
-    params: { slug: project.slug },
-    props: { project },
-  }));
+// Only a rendered project gets cached. A cached 404 redirect would hide a
+// project for the cache lifetime after it's published.
+const uncached = (response: Response) => {
+  Astro.cache?.set(false);
+  return response;
+};
+
+const slug = decodeSlug(Astro.params.slug);
+if (!slug) return uncached(Astro.redirect('/404'));
+
+const { entry: project, error, cacheHint } = await getEmDashEntry('projects', slug);
+if (error) return uncached(new Response('Could not load the project', { status: 500 }));
+if (!project) return uncached(Astro.redirect('/404'));
+
+const {
+  title,
+  tagline,
+  description,
+  category,
+  project_status: status,
+  url,
+  accent = '#00d9ff',
+  protected: isProtected,
+  access_password: password,
+} = project.data;
+const tags = splitTags(project.data.tags);
+
+// Locked projects: check the unlock cookie, or the submitted password.
+let locked = false;
+let gateError = '';
+if (isProtected) {
+  // Responses vary per visitor, so they must never be cached or indexed.
+  Astro.response.headers.set('Cache-Control', 'private, no-store');
+  Astro.cache?.set(false);
+  const cookieName = unlockCookieName(slug);
+
+  if (!password) {
+    // Protected but no password set yet: stay locked rather than open.
+    locked = true;
+  } else {
+    const expected = await unlockToken(slug, password);
+    const cookie = Astro.cookies.get(cookieName)?.value;
+    locked = !(cookie && (await safeEqual(cookie, expected)));
+
+    if (locked && Astro.request.method === 'POST') {
+      const form = await Astro.request.formData();
+      const attempt = String(form.get('password') ?? '');
+      if (await safeEqual(attempt, password)) {
+        Astro.cookies.set(cookieName, expected, {
+          path: `/projects/${slug}`,
+          httpOnly: true,
+          secure: Astro.url.protocol === 'https:',
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30,
+        });
+        return uncached(Astro.redirect(`/projects/${slug}`, 303));
+      }
+      gateError = 'Incorrect password.';
+      Astro.response.status = 401;
+    }
+  }
+} else if (Astro.cache?.enabled) {
+  Astro.cache.set(cacheHint);
 }
 
-const { project } = Astro.props;
-const { Content } = await project.render();
-const { title, tagline, description, category, tags, status, url, accent, protected: isProtected, passwordHash } = project.data;
-
-const statusClass = {
-  'Live': 'live',
-  'In Progress': 'progress',
-  'Concept': 'concept',
-}[status] ?? 'concept';
+const safeUrl = (() => {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:' ? parsed.href : undefined;
+  } catch {
+    return undefined;
+  }
+})();
 ---
 
-<Layout title={`${title} — MH Designs`} description={description}>
+<Layout
+  title={locked ? 'Private project — MH Designs' : `${title} — MH Designs`}
+  description={locked ? 'This project is private.' : (description ?? tagline)}
+  type="article"
+  content={locked ? undefined : { collection: 'projects', id: project.data.id, slug }}
+  noindex={isProtected}
+>
   <Header />
 
-  {isProtected && (
-    <div id="password-gate" data-hash={passwordHash} data-slug={project.slug}>
+  {locked ? (
+    <div id="password-gate">
       <div class="gate-card">
         <div class="gate-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         </div>
-        <h2>Password required</h2>
+        <h1 class="gate-title">Password required</h1>
         <p>This project is private. Enter the password to view it.</p>
-        <form id="gate-form">
+        <form id="gate-form" method="post">
+          <label for="gate-input" class="visually-hidden">Password</label>
           <input
             id="gate-input"
+            name="password"
             type="password"
             placeholder="Password"
             autocomplete="current-password"
             required
+            autofocus
           />
           <button type="submit">Unlock</button>
         </form>
-        <p id="gate-error" class="gate-error" aria-live="polite"></p>
+        <p id="gate-error" class="gate-error" aria-live="polite">{gateError}</p>
+        <a href="/#work" class="gate-back">← Back to work</a>
       </div>
     </div>
+  ) : (
+    <main id="project-content">
+      <article>
+        <div class="project-hero" style={`--project-accent: ${accent};`}>
+          <div class="container">
+            <div class="back-link">
+              <a href="/#work">← Back to work</a>
+            </div>
+
+            <div class="meta">
+              <span class="category" {...project.edit.category}>{category}</span>
+              <span class={`badge ${statusClass(status)}`}>{status}</span>
+            </div>
+
+            <h1 {...project.edit.title}>{title}</h1>
+            <p class="tagline" {...project.edit.tagline}>{tagline}</p>
+
+            <div class="tags">
+              {tags.map((tag) => <span class="tag">{tag}</span>)}
+            </div>
+
+            {safeUrl && (
+              <a href={safeUrl} target="_blank" rel="noopener" class="visit-btn">
+                Visit site →
+              </a>
+            )}
+          </div>
+          <div class="hero-glow" aria-hidden="true"></div>
+        </div>
+
+        <div class="container prose-container">
+          <div class="prose" {...project.edit.content}>
+            {project.data.content && <PortableText value={project.data.content} />}
+          </div>
+        </div>
+      </article>
+    </main>
   )}
-
-  <main id="project-content" style={isProtected ? 'display:none' : ''}>
-    <article>
-      <div class="project-hero" style={`--project-accent: ${accent};`}>
-        <div class="container">
-          <div class="back-link">
-            <a href="/#work">← Back to work</a>
-          </div>
-
-          <div class="meta">
-            <span class="category">{category}</span>
-            <span class={`badge ${statusClass}`}>{status}</span>
-          </div>
-
-          <h1>{title}</h1>
-          <p class="tagline">{tagline}</p>
-
-          <div class="tags">
-            {tags.map(tag => <span class="tag">{tag}</span>)}
-          </div>
-
-          {url && (
-            <a href={url} target="_blank" rel="noopener" class="visit-btn">
-              Visit site →
-            </a>
-          )}
-        </div>
-        <div class="hero-glow" aria-hidden="true"></div>
-      </div>
-
-      <div class="container prose-container">
-        <div class="prose">
-          <Content />
-        </div>
-      </div>
-    </article>
-  </main>
   <Footer />
 </Layout>
 
@@ -272,7 +341,7 @@ const statusClass = {
     margin-bottom: 0.5rem;
   }
 
-  .gate-card h2 {
+  .gate-card .gate-title {
     font-size: 1.4rem;
     margin: 0;
   }
@@ -323,47 +392,20 @@ const statusClass = {
     min-height: 1em;
     margin: 0;
   }
+  .gate-back {
+    margin-top: 0.5rem;
+    font-family: var(--font-head);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .gate-back:hover { color: var(--text); }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 </style>
-
-{isProtected && (
-  <script is:inline>
-    (function () {
-      const gate = document.getElementById('password-gate');
-      const content = document.getElementById('project-content');
-      if (!gate) return;
-
-      const slug = gate.dataset.slug;
-      const storedHash = gate.dataset.hash;
-      const sessionKey = `unlocked-${slug}`;
-
-      async function sha256(str) {
-        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-        return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-      }
-
-      function unlock() {
-        gate.style.display = 'none';
-        content.style.display = '';
-        sessionStorage.setItem(sessionKey, '1');
-      }
-
-      if (sessionStorage.getItem(sessionKey) === '1') {
-        unlock();
-        return;
-      }
-
-      document.getElementById('gate-form').addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const input = document.getElementById('gate-input').value;
-        const hash = await sha256(input);
-        if (hash === storedHash) {
-          unlock();
-        } else {
-          document.getElementById('gate-error').textContent = 'Incorrect password.';
-          document.getElementById('gate-input').value = '';
-          document.getElementById('gate-input').focus();
-        }
-      });
-    })();
-  </script>
-)}
