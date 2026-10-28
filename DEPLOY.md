@@ -28,6 +28,10 @@ To lock a project, turn on **Password protected** and set a **Password**. The ch
 the server, so locked content is never sent to the browser. Changing the password signs out
 everyone who unlocked it before.
 
+The lock is for sharing work in progress with a few people, not for confidential work. There
+is no limit on guesses, and the password is stored as plain text, so anyone who can sign in to
+the admin can read it. Use a fresh password for each project, never one you use elsewhere.
+
 `seed/projects/*.md` and `scripts/build-seed.mjs` only seed an empty database. Run
 `npm run seed:build` after changing them.
 
@@ -62,6 +66,38 @@ If it reports a held lock, rerun with `--status`, then add `--take-over-lock=<id
 
 Then open `/_emdash/admin` on the live site right away (until then anyone can claim it), choose
 **Sample content**, and create the admin account with a passkey.
+
+## Admin sign-in
+
+The admin uses passkeys only. Email sign-in links aren't set up, so a lost passkey can't be
+reset by email. After signing in, add a second passkey from your account settings (for example
+one on your phone and one in your password manager).
+
+Passkeys belong to the site's address. Moving to a custom domain later means signing in on the
+old address first and adding a passkey on the new one, or setting `siteUrl` in the EmDash
+config before the move.
+
+## Backups
+
+D1 keeps 7 days of history on the free plan. To roll the database back to a point in time:
+
+```bash
+npx wrangler d1 time-travel info mh-website
+npx wrangler d1 time-travel restore mh-website --timestamp=<ISO time>
+```
+
+For a copy that lasts longer, export it after any big round of edits and keep the file
+somewhere outside this repo (it holds the project passwords):
+
+```bash
+npx wrangler d1 export mh-website --remote --output=mh-website-backup.sql
+```
+
+Media in R2 has no history. Keep the originals of anything you upload.
+
+`EMDASH_ENCRYPTION_KEY` signs the password-gate cookies and encrypts plugin settings. Keep a
+copy in your password manager. No plugin settings are stored today, so replacing the key only
+relocks the protected projects. That changes once plugins with secrets are added.
 
 ## Caching
 

@@ -23,7 +23,9 @@
 	// "worker_loaders": [{ "binding": "LOADER" }],
 	// Cache in front of the Worker; astro.config.mjs sets what gets cached.
 	"cache": { "enabled": true },
+	// Runs EmDash's scheduled publishing. Hourly instead of the template's every
+	// minute, so a scheduled post can go live up to an hour late.
 	"triggers": {
-		"crons": ["* * * * *"],
+		"crons": ["0 * * * *"],
 	},
 }
