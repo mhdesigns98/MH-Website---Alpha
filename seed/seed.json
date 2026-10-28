@@ -1,0 +1,1000 @@
+{
+  "$schema": "https://emdashcms.com/seed.schema.json",
+  "version": "1",
+  "meta": {
+    "name": "MH Designs",
+    "description": "Portfolio of Mike Hayes, Web Designer and Developer.",
+    "author": "Mike Hayes"
+  },
+  "settings": {
+    "title": "MH Designs",
+    "tagline": "Web Designer & Developer, building systems, tools, and digital experiences."
+  },
+  "collections": [
+    {
+      "slug": "projects",
+      "label": "Projects",
+      "labelSingular": "Project",
+      "supports": [
+        "drafts",
+        "revisions",
+        "search",
+        "seo"
+      ],
+      "fields": [
+        {
+          "slug": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "tagline",
+          "label": "Tagline (shows on cards)",
+          "type": "text",
+          "required": true,
+          "searchable": true
+        },
+        {
+          "slug": "description",
+          "label": "Description (SEO)",
+          "type": "text",
+          "searchable": true
+        },
+        {
+          "slug": "category",
+          "label": "Category",
+          "type": "select",
+          "required": true,
+          "validation": {
+            "options": [
+              "Gaming Tool",
+              "Web Design",
+              "Podcast",
+              "Documentary",
+              "Dev Tool",
+              "Branding"
+            ]
+          }
+        },
+        {
+          "slug": "tags",
+          "label": "Tags (comma-separated)",
+          "type": "string"
+        },
+        {
+          "slug": "project_status",
+          "label": "Status",
+          "type": "select",
+          "required": true,
+          "defaultValue": "In Progress",
+          "validation": {
+            "options": [
+              "Live",
+              "In Progress",
+              "Concept"
+            ]
+          }
+        },
+        {
+          "slug": "url",
+          "label": "Live URL",
+          "type": "url"
+        },
+        {
+          "slug": "featured",
+          "label": "Featured",
+          "type": "boolean",
+          "defaultValue": false
+        },
+        {
+          "slug": "order",
+          "label": "Sort order (1 = first)",
+          "type": "integer",
+          "defaultValue": 99
+        },
+        {
+          "slug": "accent",
+          "label": "Accent color (hex)",
+          "type": "string",
+          "defaultValue": "#00d9ff"
+        },
+        {
+          "slug": "protected",
+          "label": "Password protected",
+          "type": "boolean",
+          "defaultValue": false
+        },
+        {
+          "slug": "access_password",
+          "label": "Password (when protected)",
+          "type": "string"
+        },
+        {
+          "slug": "content",
+          "label": "Content",
+          "type": "portableText",
+          "searchable": true
+        }
+      ]
+    }
+  ],
+  "content": {
+    "projects": [
+      {
+        "id": "richmond-diocese-revamp",
+        "slug": "richmond-diocese-revamp",
+        "status": "published",
+        "data": {
+          "title": "Catholic Diocese of Richmond — Homepage Revamp",
+          "tagline": "A modern editorial redesign of a diocesan homepage, balancing institutional gravity with a warmer, more navigable digital experience.",
+          "description": "A homepage redesign concept for the Catholic Diocese of Richmond — reworking an aging institutional site into a warmer, editorial layout with a clearer information hierarchy for parishes, schools, news, and giving.",
+          "category": "Web Design",
+          "tags": "Web Design, Editorial, Redesign, Nonprofit",
+          "project_status": "Concept",
+          "featured": true,
+          "order": 5,
+          "accent": "#7B2D8B",
+          "protected": false,
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k0",
+                  "text": "The Challenge",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k3",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2",
+                  "text": "The original diocesan site leaned heavily on dense navigation and dated visual conventions, making it hard for parishioners to quickly find parishes, Mass times, news, or ways to give. The goal was a full homepage revamp that felt trustworthy and editorial rather than institutional and cluttered.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k5",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k4",
+                  "text": "The Approach",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k7",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k6",
+                  "text": "A deep purple and gold palette paired with serif display type (Playfair Display) to signal tradition without feeling stuffy",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k9",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k8",
+                  "text": "A hero section built around a single clear call to action — the diocesan pilgrimage — rather than competing banners",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kb",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ka",
+                  "text": "A quick-links strip surfacing the four tasks visitors need most: find a parish, check Mass times, contact the diocese, and victim assistance resources",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kd",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kc",
+                  "text": "A featured-cards section and a two-column news + sidebar layout to separate announcements from evergreen resources like parish search and the diocesan newspaper",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kf",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "ke",
+                  "text": "What I Focused On",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kh",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kg",
+                  "text": "Legibility and hierarchy — making sure a first-time visitor (often searching for Mass times or a specific parish) can get there in one click, while still giving the diocese room for editorial storytelling and fundraising asks.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kk",
+              "style": "normal",
+              "markDefs": [
+                {
+                  "_key": "ki",
+                  "_type": "link",
+                  "href": "/demos/richmond-diocese-revamp/"
+                }
+              ],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kj",
+                  "text": "View the live demo →",
+                  "marks": [
+                    "ki"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "rva-got-issues",
+        "slug": "rva-got-issues",
+        "status": "published",
+        "data": {
+          "title": "RVA's Got Issues",
+          "tagline": "A podcast website for Richmond's sharpest take on local politics and community.",
+          "description": "Designing and building the digital home for RVA's Got Issues, a VPM podcast covering Richmond, Virginia politics, community stories, and the issues that matter to locals. The site balances podcast functionality with editorial content and a strong sense of place.",
+          "category": "Podcast",
+          "tags": "Web Design, Podcast, Editorial, VPM",
+          "project_status": "In Progress",
+          "featured": true,
+          "order": 3,
+          "accent": "#f43f5e",
+          "protected": false,
+          "content": [
+            {
+              "_type": "block",
+              "_key": "km",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kl",
+                  "text": "The Show",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "ko",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kn",
+                  "text": "RVA's Got Issues is a locally-rooted podcast from VPM that digs into the politics and personalities shaping Richmond. It has a distinct voice — direct, community-minded, and not afraid to go deep on local issues.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kq",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kp",
+                  "text": "The Site",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "ks",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kr",
+                  "text": "The design needed to match that energy. The goals were:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "ku",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kt",
+                  "text": "Make episodes easy to find and listen to",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "kw",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kv",
+                  "text": "Surface editorial content and show context",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "ky",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kx",
+                  "text": "Feel distinctly Richmond — not generic podcast template",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k10",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "kz",
+                  "text": "Work seamlessly on mobile (where most listeners find it)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k12",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k11",
+                  "text": "What I Focused On",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k14",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k13",
+                  "text": "Strong typography and a color palette rooted in the show's identity. Clean episode pages that lead with the content and make sharing easy. A homepage that gives first-time visitors enough context to know what the show is about immediately.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "shenandoah-documentary",
+        "slug": "shenandoah-documentary",
+        "status": "published",
+        "data": {
+          "title": "Shenandoah",
+          "tagline": "A documentary microsite for VPM's film exploring the Shenandoah Valley.",
+          "description": "Building the digital companion for Shenandoah, a documentary production from VPM. The site is designed to extend the film's storytelling online — drawing viewers in with the visual language of the documentary and giving them context, background, and ways to engage beyond the screen.",
+          "category": "Documentary",
+          "tags": "Microsite, Storytelling, Visual Design, VPM",
+          "project_status": "In Progress",
+          "featured": true,
+          "order": 4,
+          "accent": "#34d399",
+          "protected": false,
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k16",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k15",
+                  "text": "The Project",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k18",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k17",
+                  "text": "Documentary microsites are a different design challenge than editorial sites — they need to feel cinematic and immersive, not utilitarian. The Shenandoah site is designed to honor the visual work of the film while serving as a standalone digital experience.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1a",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k19",
+                  "text": "Design Approach",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1c",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1b",
+                  "text": "Lead with visuals: full-bleed photography and video",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1e",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1d",
+                  "text": "Typography that feels literary and crafted — not news-adjacent",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1g",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1f",
+                  "text": "A structure that guides viewers through the story even if they haven't seen the film yet",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1i",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1h",
+                  "text": "Clear pathways to watch, share, and learn more",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1k",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1j",
+                  "text": "The Challenge",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1m",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1l",
+                  "text": "Balancing the rich visual identity of the documentary with the practical needs of a web audience — fast loading, accessible, and readable across all devices.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "vpm-components",
+        "slug": "vpm-components",
+        "status": "published",
+        "data": {
+          "title": "VPM.org Design System",
+          "tagline": "Layouts, components, and patterns powering Virginia's public media hub.",
+          "description": "Building and maintaining the design system and component library for VPM.org — Virginia's home for NPR news, PBS content, and local journalism. This includes reusable page templates, UI components, and layout patterns that keep the site consistent as it scales.",
+          "category": "Web Design",
+          "tags": "Design Systems, HTML/CSS, Component Library, VPM",
+          "project_status": "In Progress",
+          "url": "https://vpm.org",
+          "featured": true,
+          "order": 2,
+          "accent": "#00d9ff",
+          "protected": false,
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k1o",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1n",
+                  "text": "The Work",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1q",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1p",
+                  "text": "VPM serves a large and growing audience across Virginia. The site needs to handle everything from breaking news to podcast pages to documentary microsites — all with a consistent visual language and a maintainable codebase.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1s",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1r",
+                  "text": "My role involves:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1u",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1t",
+                  "text": "Designing and building reusable layout templates for different content types",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1w",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1v",
+                  "text": "Creating a component library that keeps pages looking consistent",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k1y",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1x",
+                  "text": "Working with the editorial team to make sure the system is flexible enough for their needs",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k20",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k1z",
+                  "text": "Balancing visual identity with accessibility and performance",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k22",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k21",
+                  "text": "Design Philosophy",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k24",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k23",
+                  "text": "Public media sites carry a lot of trust — people come for real journalism. The design has to get out of the way and let the content breathe, while still feeling modern and intentional.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "wuthering-waves-echo-guide",
+        "slug": "wuthering-waves-echo-guide",
+        "status": "published",
+        "data": {
+          "title": "WuWa Echo Set Guide",
+          "tagline": "A lightweight reference tool for Wuthering Waves echo farming — pick a set, see who uses it and how to build it.",
+          "description": "A single-page reference site for Wuthering Waves echo sets. Select any of the game's 25 echo sets and instantly see every character that uses it, recommended main stats per cost tier, and substat priorities — so you always know what to keep or discard while farming.",
+          "category": "Gaming Tool",
+          "tags": "React, GitHub Pages, Game Guide, Static Site",
+          "project_status": "Live",
+          "url": "https://mhdesigns98.github.io/wuwa-echo-guide/",
+          "featured": true,
+          "order": 1,
+          "accent": "#f59e0b",
+          "protected": false,
+          "content": [
+            {
+              "_type": "block",
+              "_key": "k26",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k25",
+                  "text": "The Problem",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k28",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k27",
+                  "text": "Wuthering Waves' echo system is deep — 25 sets, each used by multiple characters with different priority stats depending on cost tier. Community spreadsheets exist, but they're clunky to navigate mid-farming-session when you just need a quick answer: \"should I keep this echo?\"",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2a",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k29",
+                  "text": "What I Built",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2c",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2b",
+                  "text": "A no-login, no-install static site where you pick an echo set and instantly see:",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2e",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2d",
+                  "text": "The set bonus and recommended main echo to slot",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2g",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2f",
+                  "text": "Every character that uses the set, with 4-cost, 3-cost, and 1-cost main stat recommendations",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2i",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2h",
+                  "text": "Priority substats in order, including Energy Regen targets where relevant",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2k",
+              "style": "normal",
+              "listItem": "bullet",
+              "level": 1,
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2j",
+                  "text": "Each character's element and role (Main DPS, Sub-DPS, Support, Healer)",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2m",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2l",
+                  "text": "How It's Built",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2s",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2n",
+                  "text": "Plain HTML with React loaded via CDN — no build step, no dependencies to install. All character and set data lives in a runtime-fetched ",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k2o",
+                  "text": "data.json",
+                  "marks": [
+                    "code"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k2p",
+                  "text": ", so the guide can be updated by editing one file (or even directly on GitHub) without touching the app itself. A Python pipeline (",
+                  "marks": []
+                },
+                {
+                  "_type": "span",
+                  "_key": "k2q",
+                  "text": "scripts/sync_prydwen_builds.py",
+                  "marks": [
+                    "code"
+                  ]
+                },
+                {
+                  "_type": "span",
+                  "_key": "k2r",
+                  "text": ") can pull fresh build recommendations from Prydwen.gg and merge them in, with a curated override layer for anything the scraper gets wrong.",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2u",
+              "style": "h2",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2t",
+                  "text": "Why It Matters",
+                  "marks": []
+                }
+              ]
+            },
+            {
+              "_type": "block",
+              "_key": "k2w",
+              "style": "normal",
+              "markDefs": [],
+              "children": [
+                {
+                  "_type": "span",
+                  "_key": "k2v",
+                  "text": "A scratching-my-own-itch project that doubled as an exercise in building a fast, dependency-free data tool — everything is static, cacheable, and free to host on GitHub Pages.",
+                  "marks": []
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

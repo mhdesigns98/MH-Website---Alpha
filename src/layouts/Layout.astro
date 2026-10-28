@@ -1,15 +1,40 @@
 ---
+import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from 'emdash/ui';
+import { createPublicPageContext } from 'emdash/page';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  type?: 'website' | 'article';
+  content?: { collection: string; id: string; slug?: string | null };
+  noindex?: boolean;
 }
 
 const {
   title = 'MH Designs',
   description = 'Web Designer & Developer — building systems, tools, and digital experiences.',
+  type = 'website',
+  content,
+  noindex = false,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.url.origin).href;
+
+// Lets EmDash inject its head tags, the editor toolbar for signed-in admins,
+// and anything plugins contribute.
+const pageCtx = createPublicPageContext({
+  Astro,
+  kind: content ? 'content' : 'custom',
+  pageType: type,
+  title,
+  pageTitle: title,
+  description,
+  canonical,
+  content,
+  seo: { robots: noindex ? 'noindex' : undefined },
+  siteName: 'MH Designs',
+});
 ---
 
 <!doctype html>
@@ -22,8 +47,11 @@ const {
     <meta property="og:description" content={description} />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <EmDashHead page={pageCtx} />
   </head>
   <body>
+    <EmDashBodyStart page={pageCtx} />
     <slot />
+    <EmDashBodyEnd page={pageCtx} />
   </body>
 </html>

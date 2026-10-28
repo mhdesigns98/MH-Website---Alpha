@@ -1,0 +1,31 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "mh-website",
+	// Personal Cloudflare account only (wrangler profile "personal")
+	"account_id": "838eca9efa4f66d164c7ff79a7f37263",
+	"main": "./src/worker.ts",
+	"compatibility_date": "2026-10-15",
+	"compatibility_flags": ["nodejs_compat"],
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "mh-website",
+			"database_id": "64172145-4555-46e7-9c65-fd3ca16c6106",
+		},
+	],
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "mh-website-media",
+		},
+	],
+	// Sandboxed plugins need Worker Loader, which is Workers Paid only.
+	// "worker_loaders": [{ "binding": "LOADER" }],
+	// Cache in front of the Worker; astro.config.mjs sets what gets cached.
+	"cache": { "enabled": true },
+	// Runs EmDash's scheduled publishing. Hourly instead of the template's every
+	// minute, so a scheduled post can go live up to an hour late.
+	"triggers": {
+		"crons": ["0 * * * *"],
+	},
+}

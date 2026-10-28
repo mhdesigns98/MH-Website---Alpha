@@ -1,13 +1,21 @@
 ---
-import { getCollection } from 'astro:content';
+import { getEmDashCollection } from 'emdash';
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Hero from '../components/Hero.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import Footer from '../components/Footer.astro';
+import { splitTags } from '../lib/projects';
 
-const allProjects = await getCollection('projects');
-const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
+const { entries: projects, error, cacheHint } = await getEmDashCollection('projects', {
+  status: 'published',
+  orderBy: { order: 'asc' },
+});
+if (error) {
+  Astro.cache?.set(false);
+  return new Response('Could not load projects', { status: 500 });
+}
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 ---
 
 <Layout>
@@ -27,13 +35,12 @@ const projects = allProjects.sort((a, b) => a.data.order - b.data.order);
           {projects.map(project => (
             <ProjectCard
               title={project.data.title}
-              tagline={project.data.tagline}
+              tagline={project.data.tagline ?? ''}
               category={project.data.category}
-              tags={project.data.tags}
-              status={project.data.status}
-              url={project.data.url}
-              slug={project.slug}
-              accent={project.data.accent}
+              tags={splitTags(project.data.tags)}
+              status={project.data.project_status}
+              slug={project.id}
+              accent={project.data.accent || '#00d9ff'}
               protected={project.data.protected}
             />
           ))}
