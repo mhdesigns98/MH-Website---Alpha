@@ -11,26 +11,19 @@ Opens at http://localhost:4321
 
 ---
 
-## Deploying to Vercel (Recommended — Free)
+## Deploying
 
-1. Push this folder to a GitHub repo (github.com → New repository)
-2. Go to vercel.com → Sign in with GitHub → "Add New Project"
-3. Select your repo — Vercel auto-detects Astro, no config needed
-4. Hit Deploy. Done.
+The site is a static build served from Cloudflare as the Worker `mh-designs` on the
+**personal** Cloudflare account (wrangler profile `personal`, pinned by `account_id` in
+`wrangler.jsonc`). Live at https://mh-designs.mikehayesdesign.workers.dev.
 
-Every time you push to GitHub, Vercel auto-redeploys.
+```bash
+npx wrangler auth activate personal .   # once per checkout
+npx wrangler whoami                      # must show the personal account
+npm run deploy
+```
 
----
-
-## Deploying to Cloudflare Pages (Also Free)
-
-1. Push to GitHub
-2. Go to dash.cloudflare.com → Workers & Pages → Create → Pages → Connect to Git
-3. Select your repo
-4. Build settings:
-   - Build command: `npm run build`
-   - Build output: `dist`
-5. Deploy.
+Pushing to GitHub doesn't deploy anything. Run `npm run deploy` after merging.
 
 ---
 
@@ -39,7 +32,7 @@ Every time you push to GitHub, Vercel auto-redeploys.
 1. Create a new file in `src/content/projects/your-project-name.md`
 2. Copy the frontmatter from an existing project and update the fields
 3. Write your project description below the `---` in markdown
-4. Push to GitHub — it deploys automatically
+4. Run `npm run deploy` to publish it
 
 ### Frontmatter fields:
 - `title` — Project name
