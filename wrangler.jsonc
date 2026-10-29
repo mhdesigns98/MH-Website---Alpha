@@ -1,0 +1,9 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "mh-designs",
+	// Personal Cloudflare account only (wrangler profile "personal")
+	"account_id": "838eca9efa4f66d164c7ff79a7f37263",
+	"compatibility_date": "2026-10-15",
+	// Static files only: no Worker code runs, so there's no CPU use per request.
+	"assets": { "directory": "./dist" }
+}
